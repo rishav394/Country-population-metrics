@@ -39,7 +39,7 @@ namespace DBMS
                     $"Are you sure you want to delete the data for {dataGridView1.SelectedRows[e.Row.Index].Cells[0].Value}?",
                     @"Hold Up!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (result == DialogResult.Yes)
-                OptionForm.collection.DeleteOneAsync(x =>
+                OptionForm.Collection.DeleteOneAsync(x =>
                     x.Country.Equals(dataGridView1.SelectedRows[e.Row.Index].Cells[0].Value));
             e.Cancel = result != DialogResult.Yes;
         }
@@ -60,7 +60,7 @@ namespace DBMS
                 }
 
             dataGridView1.Rows.Clear();
-            foreach (PopulationObject l in OptionForm.collection.Find(new BsonDocument()).ToListAsync().Result)
+            foreach (PopulationObject l in OptionForm.Collection.Find(new BsonDocument()).ToListAsync().Result)
             {
                 if (countryCheck.Checked && !l.Country.ToLower().Contains(countryFIlterBox.Text.ToLower())) continue;
                 if (emissionCHeck.Checked && !(l.CO2emission > double.Parse(EmissionFrom.Text) &&
@@ -131,7 +131,7 @@ namespace DBMS
         {
             if (double.TryParse(dataGridView1.CurrentCell.Value.ToString(), out double result))
             {
-                PopulationObject pop = OptionForm.collection
+                PopulationObject pop = OptionForm.Collection
                     .Find(x => x.Country.Equals(dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0]
                         .Value)).FirstOrDefaultAsync()
                     .Result;
@@ -155,7 +155,7 @@ namespace DBMS
                     pop.Population = (ulong)result;
                 }
 
-                OptionForm.collection.ReplaceOneAsync(x => x.Country.Equals(dataGridView1
+                OptionForm.Collection.ReplaceOneAsync(x => x.Country.Equals(dataGridView1
                         .Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0]
                         .Value)
                     , pop);

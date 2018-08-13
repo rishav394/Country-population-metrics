@@ -24,7 +24,7 @@ namespace DBMS
 
             try
             {
-                OptionForm.collection.InsertOne(new PopulationObject
+                OptionForm.Collection.InsertOne(new PopulationObject
                 {
                     Country = textBox4.Text,
                     CO2emission = double.Parse(textBox1.Text),
