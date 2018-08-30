@@ -17,8 +17,8 @@ namespace DBMS
                 if (control is TextBox && control.Text.Length < 1)
                 {
                     MessageBox.Show(
-                        "The input format is not quite correct. Please make sure that none of the fields are left blank.",
-                        "Hold up!!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                        @"The input format is not quite correct. Please make sure that none of the fields are left blank.",
+                        @"Hold up!!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 }
             }
 
@@ -32,15 +32,15 @@ namespace DBMS
                     LandArea = double.Parse(textBox2.Text),
                     Population = ulong.Parse(textBox3.Text)
                 });
-                MessageBox.Show($"Added {textBox4.Text}'s Data!");
+                MessageBox.Show($@"Added {textBox4.Text}'s Data!");
                 Close();
             }
             catch (Exception)
             {
                 MessageBox.Show(
-                    "The input format is not quite correct. Please make sure that the" +
-                    " fields get the data they ask for. For example population can only accept numbers.",
-                    "Hold up!!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    @"The input format is not quite correct. Please make sure that the" +
+                    @" fields get the data they ask for. For example population can only accept numbers.",
+                    @"Hold up!!", MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }
         }
     }

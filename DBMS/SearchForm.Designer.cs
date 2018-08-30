@@ -209,7 +209,7 @@
             this.percCheck.Size = new System.Drawing.Size(15, 14);
             this.percCheck.TabIndex = 5;
             this.percCheck.UseVisualStyleBackColor = true;
-            this.percCheck.CheckedChanged += new System.EventHandler(this.PercCheck_CheckedChanged);
+            this.percCheck.CheckedChanged += new System.EventHandler(this.PercentageCheck_CheckedChanged);
             // 
             // emissionCHeck
             // 

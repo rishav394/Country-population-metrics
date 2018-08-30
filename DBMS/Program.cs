@@ -1,19 +1,44 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace DBMS
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new OptionForm());
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new OptionForm());
+            }
+            catch (Exception e)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(@"An exception has occurred....");
+                Console.ResetColor();
+
+                if (!OptionForm.IsSoftwareInstalled("Mongo"))
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine(
+                        @"Looks like MongoDB is not installed. Please install it manually.....");
+                    Console.ResetColor();
+                }
+                else
+                {
+                    Console.WriteLine(e);
+                }
+
+                Environment.Exit(1);
+            }
         }
     }
 }

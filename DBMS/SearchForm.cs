@@ -34,7 +34,7 @@ namespace DBMS
 
         private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            DialogResult result =
+            var result =
                 MessageBox.Show(
                     $"Are you sure you want to delete the data for {dataGridView1.SelectedRows[e.Row.Index].Cells[0].Value}?",
                     @"Hold Up!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -52,15 +52,16 @@ namespace DBMS
                     (string.IsNullOrWhiteSpace(con.Text) || string.IsNullOrEmpty(con.Text)))
                 {
                     MessageBox.Show(
-                        "Please fill up all the required Fields before proceeding." +
+                        @"Please fill up all the required Fields before proceeding." +
                         "\nFor infinity you can use insane Values like \"1e100\"" +
-                        "\nUn-check the respective checkboxes to not use the filter.", "Hold up!", MessageBoxButtons.OK,
+                        "\nUn-check the respective checkboxes to not use the filter.", @"Hold up!",
+                        MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                     return;
                 }
 
             dataGridView1.Rows.Clear();
-            foreach (PopulationObject l in OptionForm.Collection.Find(new BsonDocument()).ToListAsync().Result)
+            foreach (var l in OptionForm.Collection.Find(new BsonDocument()).ToListAsync().Result)
             {
                 if (countryCheck.Checked && !l.Country.ToLower().Contains(countryFIlterBox.Text.ToLower())) continue;
                 if (emissionCHeck.Checked && !(l.CO2emission > double.Parse(EmissionFrom.Text) &&
@@ -81,6 +82,7 @@ namespace DBMS
                 if (capitaCheck.Checked && !(l.EmissionPerCapita > double.Parse(emiPerCapFrom.Text) &&
                                              l.EmissionPerCapita < double.Parse(emiPerCapTo.Text)))
                     continue;
+
                 dataGridView1.Rows.Add(l.Country, l.CO2emission, l.CO2percent, l.LandArea, l.Population,
                     l.EmissionPerCapita, l.EmissionPerArea);
             }
@@ -101,7 +103,7 @@ namespace DBMS
             EmissionFrom.Enabled = emissionCHeck.Checked;
         }
 
-        private void PercCheck_CheckedChanged(object sender, EventArgs e)
+        private void PercentageCheck_CheckedChanged(object sender, EventArgs e)
         {
             perEmiTo.Enabled = percCheck.Checked;
             percEmiFrom.Enabled = percCheck.Checked;
@@ -129,31 +131,22 @@ namespace DBMS
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (double.TryParse(dataGridView1.CurrentCell.Value.ToString(), out double result))
+            if (double.TryParse(dataGridView1.CurrentCell.Value.ToString(), out var result))
             {
-                PopulationObject pop = OptionForm.Collection
+                var pop = OptionForm.Collection
                     .Find(x => x.Country.Equals(dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0]
                         .Value)).FirstOrDefaultAsync()
                     .Result;
-                double d = dataGridView1.Tag is IConvertible convertible ? convertible.ToDouble(null) : 0d;
+                var d = dataGridView1.Tag is IConvertible convertible ? convertible.ToDouble(null) : 0d;
 
                 // ReSharper disable CompareOfFloatsByEqualityOperator
                 if (pop.CO2emission == d)
-                {
                     pop.CO2emission = result;
-                }
-                else if(pop.CO2percent == d)
-                {
+                else if (pop.CO2percent == d)
                     pop.CO2percent = result;
-                }
                 else if (pop.LandArea == d)
-                {
                     pop.LandArea = result;
-                }  // ReSharper restore CompareOfFloatsByEqualityOperator
-                else if (pop.Population == (ulong)dataGridView1.Tag)
-                {
-                    pop.Population = (ulong)result;
-                }
+                else if (pop.Population == (ulong) dataGridView1.Tag) pop.Population = (ulong) result;
 
                 OptionForm.Collection.ReplaceOneAsync(x => x.Country.Equals(dataGridView1
                         .Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0]
