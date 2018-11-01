@@ -1,7 +1,9 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace DBMS
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class PopulationObject
     {
         [BsonId]

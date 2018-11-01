@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Forms;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DBMS
 {
+    [SuppressMessage("ReSharper", "LocalizableElement")]
     public partial class SearchForm : Form
     {
         public SearchForm()
@@ -14,6 +16,8 @@ namespace DBMS
 
         private void SearchForm_Load(object sender, EventArgs e)
         {
+            Console.WriteLine(dataGridView1.EditMode);
+            dataGridView1.EditMode = DataGridViewEditMode.EditProgrammatically;
             countryFIlterBox.Enabled = false;
             EmissionFrom.Enabled = false;
             emissionTo.Enabled = false;
@@ -32,7 +36,7 @@ namespace DBMS
             FilterButtonClick(sender, e);
         }
 
-        private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        private void DataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
             var result =
                 MessageBox.Show(
@@ -48,19 +52,21 @@ namespace DBMS
         {
             // Check if required textBoxes are not empty
             foreach (Control con in panel3.Controls)
-                if (con is TextBox && con.Enabled &&
-                    (string.IsNullOrWhiteSpace(con.Text) || string.IsNullOrEmpty(con.Text)))
-                {
-                    MessageBox.Show(
-                        @"Please fill up all the required Fields before proceeding." +
-                        "\nFor infinity you can use insane Values like \"1e100\"" +
-                        "\nUn-check the respective checkboxes to not use the filter.", @"Hold up!",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                    return;
-                }
+            {
+                if (!(con is TextBox) || !con.Enabled ||
+                    (!string.IsNullOrWhiteSpace(con.Text) && !string.IsNullOrEmpty(con.Text))) continue;
+                MessageBox.Show(
+                    @"Please fill up all the required Fields before proceeding." +
+                    "\nFor infinity you can use insane Values like \"1e100\"" +
+                    "\nUn-check the respective checkboxes to not use the filter.", @"Hold up!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
 
             dataGridView1.Rows.Clear();
+
+            // Writing the data
             foreach (var l in OptionForm.Collection.Find(new BsonDocument()).ToListAsync().Result)
             {
                 if (countryCheck.Checked && !l.Country.ToLower().Contains(countryFIlterBox.Text.ToLower())) continue;
@@ -92,12 +98,12 @@ namespace DBMS
         {
         }
 
-        private void countryCheck_CheckedChanged(object sender, EventArgs e)
+        private void CountryCheck_CheckedChanged(object sender, EventArgs e)
         {
             countryFIlterBox.Enabled = countryCheck.Checked;
         }
 
-        private void emissionCHeck_CheckedChanged(object sender, EventArgs e)
+        private void EmissionCHeck_CheckedChanged(object sender, EventArgs e)
         {
             emissionTo.Enabled = emissionCHeck.Checked;
             EmissionFrom.Enabled = emissionCHeck.Checked;
@@ -129,7 +135,7 @@ namespace DBMS
             EmiPerAreaFrom.Enabled = EmiPerAreaTo.Enabled = emissionPerAreaCheck.Checked;
         }
 
-        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void DataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (double.TryParse(dataGridView1.CurrentCell.Value.ToString(), out var result))
             {
@@ -159,9 +165,30 @@ namespace DBMS
             }
         }
 
-        private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        private void DataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             dataGridView1.Tag = dataGridView1.CurrentCell.Value;
+        }
+
+        private void LockClick(object sender, EventArgs e)
+        {
+            if (dataGridView1.EditMode == DataGridViewEditMode.EditProgrammatically)
+            {
+                
+                MessageBox.Show("Waiting for authorization.");
+                var password = Console.ReadLine();
+
+
+                if (password?.Equals("mydatabasepassword") != true)
+                {
+                    MessageBox.Show("Invalid Password");
+                    return;
+                }
+            }
+            dataGridView1.EditMode = dataGridView1.EditMode == DataGridViewEditMode.EditProgrammatically
+                ? DataGridViewEditMode.EditOnF2
+                : DataGridViewEditMode.EditProgrammatically;
+            MessageBox.Show("Edit access type has been changed to " + dataGridView1.EditMode);
         }
     }
 }

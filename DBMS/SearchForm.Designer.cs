@@ -33,6 +33,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label14 = new System.Windows.Forms.Label();
             this.emissionPerAreaCheck = new System.Windows.Forms.CheckBox();
             this.capitaCheck = new System.Windows.Forms.CheckBox();
@@ -79,6 +80,7 @@
             this.per_Area = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -99,6 +101,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.Color.Transparent;
+            this.panel3.Controls.Add(this.pictureBox1);
             this.panel3.Controls.Add(this.label14);
             this.panel3.Controls.Add(this.emissionPerAreaCheck);
             this.panel3.Controls.Add(this.capitaCheck);
@@ -139,6 +142,16 @@
             this.panel3.Size = new System.Drawing.Size(1169, 126);
             this.panel3.TabIndex = 0;
             this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint_1);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::DBMS.Properties.Resources.icons8_Lock_48px;
+            this.pictureBox1.Location = new System.Drawing.Point(1096, 20);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(52, 50);
+            this.pictureBox1.TabIndex = 35;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.LockClick);
             // 
             // label14
             // 
@@ -221,7 +234,7 @@
             this.emissionCHeck.Size = new System.Drawing.Size(15, 14);
             this.emissionCHeck.TabIndex = 2;
             this.emissionCHeck.UseVisualStyleBackColor = true;
-            this.emissionCHeck.CheckedChanged += new System.EventHandler(this.emissionCHeck_CheckedChanged);
+            this.emissionCHeck.CheckedChanged += new System.EventHandler(this.EmissionCHeck_CheckedChanged);
             // 
             // countryCheck
             // 
@@ -233,7 +246,7 @@
             this.countryCheck.Size = new System.Drawing.Size(15, 14);
             this.countryCheck.TabIndex = 0;
             this.countryCheck.UseVisualStyleBackColor = true;
-            this.countryCheck.CheckedChanged += new System.EventHandler(this.countryCheck_CheckedChanged);
+            this.countryCheck.CheckedChanged += new System.EventHandler(this.CountryCheck_CheckedChanged);
             // 
             // label12
             // 
@@ -563,9 +576,9 @@
             this.dataGridView1.RowTemplate.Height = 30;
             this.dataGridView1.Size = new System.Drawing.Size(1193, 447);
             this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
-            this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
-            this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.dataGridView1_UserDeletingRow);
+            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.DataGridView1_CellBeginEdit);
+            this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellEndEdit);
+            this.dataGridView1.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.DataGridView1_UserDeletingRow);
             // 
             // Country
             // 
@@ -628,6 +641,7 @@
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
@@ -682,5 +696,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Ppulation;
         private System.Windows.Forms.DataGridViewTextBoxColumn per_pop;
         private System.Windows.Forms.DataGridViewTextBoxColumn per_Area;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace DBMS
 {
-    public class DGV: DataGridView
+    public class Dgv : DataGridView
     {
         protected override void PaintBackground(Graphics graphics, Rectangle clipBounds, Rectangle gridBounds)
         {

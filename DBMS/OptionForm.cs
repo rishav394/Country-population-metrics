@@ -66,7 +66,11 @@ namespace DBMS
 
                     p.Start();
                     Thread.Sleep(10000);
-                    Console.WriteLine("\r\n\r\nRetrying to connect to MongoDB...................\r\n\r\n");
+                    Console.WriteLine(@"
+
+Retrying to connect to MongoDB...................
+
+");
                     MongoMethod();
                     return;
                 }
@@ -94,7 +98,7 @@ namespace DBMS
             {
                 Console.WriteLine(@"No existing collection was found. Make a new collection? [Y/N]");
                 var resp = Console.ReadKey();
-                if (resp.ToString().Equals("Y") || resp.ToString().Equals("y"))
+                if (resp.KeyChar == 'Y' || resp.KeyChar == 'y')
                 {
                     db.CreateCollection(collectionName);
                 }
